@@ -15,6 +15,7 @@ namespace Assets
 {
   public class Helper : MonoBehaviour
   {
+
     public List<GameObject> GetChildren(GameObject obj)
     {
       var children = new List<GameObject>();
@@ -41,11 +42,17 @@ namespace Assets
 
       //}
     }
+
+    public MathFunc mathFunc = new MathFunc();
+
   }
 
-  class Math
+  public class MathFunc
   {
-    
+    public Vector3 GetBoxCenter(Vector3[] points){
+      var pointList = points.ToList();
+      return new Vector3(pointList.Sum(coor => coor.x) / pointList.Count, pointList.Sum(coor => coor.y) / pointList.Count, pointList.Sum(coor => coor.z) / pointList.Count);
+    }
   }
 }
 

@@ -7,13 +7,17 @@ public class Hand : MonoBehaviour
 
   private GameObject handLandMarkAnnotation;
   private GameObject handHandRectMarkAnnotation;
+  private GameObject palmAnnotation;
   private Vector3[] rectCoordiante = new Vector3[4];
+  private Quaternion rectAngle = new Quaternion();
   private Assets.Helper Helper = new Assets.Helper();
   // Start is called before the first frame update
   void Start()
   {
     handLandMarkAnnotation = GameObject.Find("HandLandmarks Annotation");
     handHandRectMarkAnnotation = GameObject.Find("HandRectsFromLandmarks Annotation");
+    palmAnnotation = GameObject.Find("PalmDetections Annotation");
+    //Instantiate(palmAnnotation, transform);
   }
 
   // Update is called once per frame
@@ -23,7 +27,8 @@ public class Hand : MonoBehaviour
     //this.gameObject.
   }
 
-  private void UdpateCall() {
+  private void UdpateCall()
+  {
 
     var temphandList = Helper.GetChildren(handLandMarkAnnotation);
     if (temphandList == null || temphandList.Count == 0) return;
@@ -34,10 +39,22 @@ public class Hand : MonoBehaviour
     var tempPointList = Helper.GetChildWithName(tempHandObject, "Point List Annotation");
 
     var rectangleInstance = temphandRectObject.GetComponent<LineRenderer>();
-    if (rectangleInstance != null) {
+    if (rectangleInstance != null)
+    {
       rectangleInstance.GetPositions(rectCoordiante);
-      Debug.Log("Hand Update" + " " + rectCoordiante[0] + rectCoordiante[1] + temphandRectObject.name + temphandRectObject.transform.position + " " + tempPointList.name + " " + tempPointList.transform.position + this.gameObject.transform.position);
+      rectAngle = rectangleInstance.transform.rotation;
+      var handCoordinate = Helper.mathFunc.GetBoxCenter(rectCoordiante);
+      gameObject.transform.SetPositionAndRotation(handCoordinate, rectAngle);
+      Debug.Log("Hand Update" + " " + rectCoordiante[0] + rectCoordiante[1] + rectCoordiante[2] + rectCoordiante[3] + temphandRectObject.name + temphandRectObject.transform.position + " " + tempPointList.name + " " + tempPointList.transform.position + gameObject.transform.position);
     }
-   
+
+    if (GetComponent<LineRenderer>() != null)
+    {
+      gameObject.AddComponent<LineRenderer>();
+    }
+    else {
+      var lineRenderer = gameObject.GetComponent<LineRenderer>();
+    }
+
   }
 }

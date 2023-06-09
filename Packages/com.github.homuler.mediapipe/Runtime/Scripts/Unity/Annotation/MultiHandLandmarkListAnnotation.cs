@@ -80,6 +80,8 @@ namespace Mediapipe.Unity
 
     public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
     {
+      //change code
+      Debug.Log("MultiHand draw");
       if (ActivateFor(targets))
       {
         CallActionForAll(targets, (annotation, target) =>

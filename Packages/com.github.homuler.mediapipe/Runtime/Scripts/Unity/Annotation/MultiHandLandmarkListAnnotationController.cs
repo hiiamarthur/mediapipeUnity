@@ -18,6 +18,8 @@ namespace Mediapipe.Unity
 
     public void DrawNow(IList<NormalizedLandmarkList> handLandmarkLists, IList<ClassificationList> handedness = null)
     {
+      //change code
+      Debug.Log("DrawNow");
       _currentHandLandmarkLists = handLandmarkLists;
       _currentHandedness = handedness;
       SyncNow();

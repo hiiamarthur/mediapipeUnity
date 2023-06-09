@@ -66,6 +66,8 @@ namespace Mediapipe.Unity
     {
       if (ActivateFor(target))
       {
+        //change code
+        Debug.Log("draw" + rotationAngle + isMirrored);
         var position = GetScreenRect().GetPoint(target, rotationAngle, isMirrored);
         if (!visualizeZ)
         {

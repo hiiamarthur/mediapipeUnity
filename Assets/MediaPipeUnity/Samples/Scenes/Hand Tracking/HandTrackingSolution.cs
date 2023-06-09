@@ -7,6 +7,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//change code
+using System;
 
 namespace Mediapipe.Unity.HandTracking
 {
@@ -16,6 +18,7 @@ namespace Mediapipe.Unity.HandTracking
     [SerializeField] private NormalizedRectListAnnotationController _handRectsFromPalmDetectionsAnnotationController;
     [SerializeField] private MultiHandLandmarkListAnnotationController _handLandmarksAnnotationController;
     [SerializeField] private NormalizedRectListAnnotationController _handRectsFromLandmarksAnnotationController;
+    public List<NormalizedLandmark> normalizeLandMark = new List<NormalizedLandmark>();
 
     public HandTrackingGraph.ModelComplexity modelComplexity
     {
@@ -48,6 +51,8 @@ namespace Mediapipe.Unity.HandTracking
         graphRunner.OnPalmDetectectionsOutput += OnPalmDetectionsOutput;
         graphRunner.OnHandRectsFromPalmDetectionsOutput += OnHandRectsFromPalmDetectionsOutput;
         graphRunner.OnHandLandmarksOutput += OnHandLandmarksOutput;
+        //change code
+        graphRunner.OnHandWorldLandmarksOutput += OnWorldHandLandmarksOutput;
         // TODO: render HandWorldLandmarks annotations
         graphRunner.OnHandRectsFromLandmarksOutput += OnHandRectsFromLandmarksOutput;
         graphRunner.OnHandednessOutput += OnHandednessOutput;
@@ -58,6 +63,7 @@ namespace Mediapipe.Unity.HandTracking
       SetupAnnotationController(_handRectsFromPalmDetectionsAnnotationController, imageSource, true);
       SetupAnnotationController(_handLandmarksAnnotationController, imageSource, true);
       SetupAnnotationController(_handRectsFromLandmarksAnnotationController, imageSource, true);
+      Debug.Log("onstart run hand");
     }
 
     protected override void AddTextureFrameToInputStream(TextureFrame textureFrame)
@@ -80,12 +86,16 @@ namespace Mediapipe.Unity.HandTracking
       }
       else if (runningMode == RunningMode.NonBlockingSync)
       {
+
         yield return new WaitUntil(() => graphRunner.TryGetNext(out palmDetections, out handRectsFromPalmDetections, out handLandmarks, out handWorldLandmarks, out handRectsFromLandmarks, out handedness, false));
       }
 
       _palmDetectionsAnnotationController.DrawNow(palmDetections);
       _handRectsFromPalmDetectionsAnnotationController.DrawNow(handRectsFromPalmDetections);
       _handLandmarksAnnotationController.DrawNow(handLandmarks, handedness);
+      //change code
+      //HandWorldLandmarksGlobal = handWorldLandmarks;
+      getWorldLandMarkList(handWorldLandmarks, "async");
       // TODO: render HandWorldLandmarks annotations
       _handRectsFromLandmarksAnnotationController.DrawNow(handRectsFromLandmarks);
     }
@@ -102,6 +112,8 @@ namespace Mediapipe.Unity.HandTracking
 
     private void OnHandLandmarksOutput(object stream, OutputEventArgs<List<NormalizedLandmarkList>> eventArgs)
     {
+      //change code
+      getNormalLandMarkList(eventArgs.value, "async");
       _handLandmarksAnnotationController.DrawLater(eventArgs.value);
     }
 
@@ -114,5 +126,71 @@ namespace Mediapipe.Unity.HandTracking
     {
       _handLandmarksAnnotationController.DrawLater(eventArgs.value);
     }
+
+    //change code
+    private void OnWorldHandLandmarksOutput(object stream, OutputEventArgs<List<LandmarkList>> eventArgs)
+    {
+      getWorldLandMarkList(eventArgs.value, "sync");
+    }
+
+
+    //change code
+    protected void getWorldLandMarkList(List<LandmarkList> landmarkLists, string mode)
+    {
+      if (normalizeLandMark == null)
+      {
+        Debug.Log("getWorldLandMarkList null" + landmarkLists.Count);
+        return;
+      }
+      if (landmarkLists == null)
+      {
+        Debug.Log("getWorldLandMarkList land null" + normalizeLandMark.Count);
+        return;
+      }
+      Debug.Log("getWorldLandMarkList " + mode + " " + normalizeLandMark.Count + " " + landmarkLists.Count + " " + landmarkLists[0]);
+
+      //HandWorldLandmarksGlobal = landmarkLists;
+    }
+
+
+
+    protected virtual void getNormalLandMarkList(List<NormalizedLandmarkList> landmarkLists, string mode)
+    {
+      if (normalizeLandMark == null)
+      {
+        Debug.Log("getNormalLandMarkList null" + landmarkLists.Count);
+        return;
+      }
+      if (landmarkLists == null)
+      {
+        Debug.Log("getNormalLandMarkList land null" + normalizeLandMark.Count);
+        return;
+      }
+
+
+      var a = landmarkLists[0].Landmark;
+      foreach (var b in a)
+      {
+        normalizeLandMark.Add(b);
+      }
+
+      var temp = getNormalPointToInherit();
+
+      Debug.Log("getNormalLandMarkList "  + mode + " " + normalizeLandMark.Count + " " + normalizeLandMark[0] + " " + landmarkLists.Count + " " + landmarkLists[0]);
+
+      //Clicked?.Invoke(this, normalizeLandMark);
+      //if()
+      Clicked?.Invoke(this, normalizeLandMark);
+
+      //HandWorldLandmarksGlobal
+      normalizeLandMark.Clear();
+    }
+
+    public virtual List<NormalizedLandmark> getNormalPointToInherit()
+    {
+      return normalizeLandMark;
+    }
+
+    public event EventHandler<List<NormalizedLandmark>> Clicked;
   }
 }
