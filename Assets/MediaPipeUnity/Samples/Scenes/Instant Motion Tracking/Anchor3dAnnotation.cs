@@ -57,6 +57,7 @@ namespace Mediapipe.Unity
         var anchor3dPosition = GetAnchorPositionInRay(anchor2dPosition, anchor3d.z * defaultDepth, cameraPosition);
 
         _pointAnnotation.Draw(anchor2dPosition);
+        Debug.Log("anchor 3d annotation "+anchor2dPosition);
         _transformAnnotation.origin = anchor3dPosition;
         _transformAnnotation.Draw(rotation, _arrowLengthScale * Vector3.one, visualizeZ);
       }

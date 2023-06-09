@@ -15,7 +15,7 @@ namespace Mediapipe.Unity
     [SerializeField] private GameObject _annotationPrefab;
 
     private List<T> _children;
-    protected List<T> children
+    public List<T> children
     {
       get
       {

@@ -27,6 +27,8 @@ namespace Mediapipe.Unity
     }
     //change code
     public Hand hand;
+    public string whichHand;
+
     private const int _LandmarkCount = 21;
     private readonly List<(int, int)> _connections = new List<(int, int)> {
       (0, 1),
@@ -124,10 +126,12 @@ namespace Mediapipe.Unity
       if (handedness == null || handedness.Count == 0 || handedness[0].Label == "Left")
       {
         SetHandedness(Hand.Left);
+        whichHand = "left";
       }
       else if (handedness[0].Label == "Right")
       {
         SetHandedness(Hand.Right);
+        whichHand = "right";
       }
       // ignore unknown label
     }

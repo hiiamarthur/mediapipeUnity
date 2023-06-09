@@ -26,11 +26,14 @@ namespace Assets
       return children;
     }
 
+    //public List<dynamic> GetChildren(dynamic x) {
+    //}
+
     public GameObject GetChildWithName(GameObject obj, string name)
     {
       return obj.transform.Find(name).gameObject;
 
-        //resultChild.transform.SetParent(obj.transform);
+      //resultChild.transform.SetParent(obj.transform);
       //foreach (Transform child in obj.transform)
       //{
       //  //Debug.Log("list yo" + );
@@ -49,7 +52,8 @@ namespace Assets
 
   public class MathFunc
   {
-    public Vector3 GetBoxCenter(Vector3[] points){
+    public Vector3 GetBoxCenter(Vector3[] points)
+    {
       var pointList = points.ToList();
       return new Vector3(pointList.Sum(coor => coor.x) / pointList.Count, pointList.Sum(coor => coor.y) / pointList.Count, pointList.Sum(coor => coor.z) / pointList.Count);
     }

@@ -144,18 +144,11 @@ namespace Mediapipe.Unity.FaceMesh
 
         foreach (var calculator in tensorsToDetectionsCalculators)
         {
-          foreach (var option in calculator.NodeOptions)
+          if (calculator.Options.HasExtension(TensorsToDetectionsCalculatorOptions.Extensions.Ext))
           {
-            // The following code is a hack to work around the problem that `calculator.Options` is currently null.
-            if (option.TryUnpack<TensorsToDetectionsCalculatorOptions>(out var opt))
-            {
-              opt.MinScoreThresh = minDetectionConfidence;
-              var calculatorOptions = new CalculatorOptions();
-              calculatorOptions.SetExtension(TensorsToDetectionsCalculatorOptions.Extensions.Ext, opt);
-              calculator.Options = calculatorOptions;
-              Logger.LogInfo(TAG, $"Min Detection Confidence = {minDetectionConfidence}");
-              break;
-            }
+            var options = calculator.Options.GetExtension(TensorsToDetectionsCalculatorOptions.Extensions.Ext);
+            options.MinScoreThresh = minDetectionConfidence;
+            Logger.LogInfo(TAG, $"Min Detection Confidence = {minDetectionConfidence}");
           }
         }
 
