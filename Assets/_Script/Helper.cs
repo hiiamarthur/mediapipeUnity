@@ -57,6 +57,10 @@ namespace Assets
       var pointList = points.ToList();
       return new Vector3(pointList.Sum(coor => coor.x) / pointList.Count, pointList.Sum(coor => coor.y) / pointList.Count, pointList.Sum(coor => coor.z) / pointList.Count);
     }
+
+    //public Vector3 Distance(Vector3 point1, Vector3 point2) {
+    //  return Vector3.Distance(point1, point2);
+    //}
   }
 }
 

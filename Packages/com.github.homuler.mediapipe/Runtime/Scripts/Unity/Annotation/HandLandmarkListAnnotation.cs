@@ -126,12 +126,12 @@ namespace Mediapipe.Unity
       if (handedness == null || handedness.Count == 0 || handedness[0].Label == "Left")
       {
         SetHandedness(Hand.Left);
-        whichHand = "left";
+        whichHand = "Left";
       }
       else if (handedness[0].Label == "Right")
       {
         SetHandedness(Hand.Right);
-        whichHand = "right";
+        whichHand = "Right";
       }
       // ignore unknown label
     }

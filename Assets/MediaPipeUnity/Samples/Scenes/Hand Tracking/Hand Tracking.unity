@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1015,7 +1015,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   annotation: {fileID: 1465467706}
-  _visualizeZ: 0
+  _visualizeZ: 1
 --- !u!114 &841116732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1181,6 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -1736,11 +1737,96 @@ MonoBehaviour:
   RF4: {fileID: 0}
   rightTxt: {fileID: 1755280691}
   leftTxt: {fileID: 1120342550}
+  leftHandExist: 0
+  rightHandExist: 0
   leftHandClose: 0
   rightHandclose: 0
   mainCam: {fileID: 1264297880}
   rightGrabedObj: {fileID: 0}
   leftGrabedObj: {fileID: 0}
+  droppingObj: {fileID: 0}
+  positionList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  RectangleListAnnotation: {fileID: 1515683786}
+  gesture:
+  - gestureName: Paper
+    handCoordinate: {x: -376.29102, y: -26.669668, z: -73.04023}
+    positionsPerFinger:
+    - {x: -373.3357, y: -217.28555, z: 0.0008746348}
+    - {x: -271.37985, y: -166.01472, z: -67.51091}
+    - {x: -211.69342, y: -64.421616, z: -99.30689}
+    - {x: -188.30458, y: 35.019775, z: -123.98308}
+    - {x: -140.023, y: 107.97641, z: -149.46292}
+    - {x: -285.18915, y: 67.805046, z: -83.216866}
+    - {x: -258.44217, y: 189.2472, z: -131.79846}
+    - {x: -245.6924, y: 272.5601, z: -165.93288}
+    - {x: -239.86598, y: 349.4628, z: -191.81432}
+    - {x: -363.62918, y: 80.347885, z: -81.84685}
+    - {x: -364.7232, y: 221.70088, z: -127.84103}
+    - {x: -368.44458, y: 318.22372, z: -161.4407}
+    - {x: -376.57645, y: 406.42438, z: -186.32687}
+    - {x: -434.35495, y: 58.3691, z: -86.96362}
+    - {x: -465.20718, y: 187.28969, z: -137.46762}
+    - {x: -487.55884, y: 279.20312, z: -173.1473}
+    - {x: -506.3699, y: 362.37714, z: -196.58101}
+    - {x: -498.44183, y: 9.641827, z: -97.08466}
+    - {x: -557.86456, y: 105.26649, z: -149.23122}
+    - {x: -599.977, y: 169.86652, z: -178.56071}
+    - {x: -636.2157, y: 236.07767, z: -197.07011}
+    time: 0
+  - gestureName: Stone
+    handCoordinate: {x: -394.7447, y: 97.73769, z: -41.13896}
+    positionsPerFinger:
+    - {x: -394.66055, y: -97.64009, z: -0.00037669108}
+    - {x: -304.8992, y: -51.744133, z: -68.54594}
+    - {x: -221.05244, y: 43.948307, z: -103.66616}
+    - {x: -273.66245, y: 107.95455, z: -129.20143}
+    - {x: -374.3294, y: 88.82233, z: -142.94377}
+    - {x: -302.30884, y: 199.27118, z: -38.24796}
+    - {x: -268.10785, y: 192.9025, z: -93.38305}
+    - {x: -278.27655, y: 100.01224, z: -121.260284}
+    - {x: -299.98544, y: 96.605515, z: -137.63545}
+    - {x: -383.3737, y: 206.45247, z: -29.96928}
+    - {x: -344.1278, y: 183.24754, z: -86.59218}
+    - {x: -340.734, y: 81.2971, z: -100.106094}
+    - {x: -362.25793, y: 93.94405, z: -99.059525}
+    - {x: -454.13467, y: 183.46147, z: -32.2532}
+    - {x: -421.09482, y: 143.03976, z: -92.1368}
+    - {x: -402.5779, y: 54.406437, z: -85.673805}
+    - {x: -417.57486, y: 70.30944, z: -70.1615}
+    - {x: -520.50214, y: 152.4663, z: -39.805782}
+    - {x: -485.22647, y: 115.33197, z: -71.11822}
+    - {x: -465.26132, y: 55.898365, z: -61.63642}
+    - {x: -475.5452, y: 67.055305, z: -48.49559}
+    time: 0
+  withPhysics: 0
+  gravity: 0.5
+  ground: {x: 0, y: 0, z: 0}
+  boxDirectionVector:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  boxObj: {fileID: 1227153157}
+  ySpeed: 0
 --- !u!4 &1986891112
 Transform:
   m_ObjectHideFlags: 0
