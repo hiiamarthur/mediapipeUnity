@@ -50,7 +50,7 @@ public class HandDetector : MonoBehaviour
 
   public Text rightTxt, leftTxt;
 
-  public bool leftHandExist, rightHandExist, leftHandClose, rightHandclose;
+  public bool leftHandExist, rightHandExist, leftHandClose, rightHandclose, rightHandOccupied, leftHandOccupied;
   public Camera mainCam;
 
   public Grabable rightGrabedObj, leftGrabedObj, droppingObj;
@@ -275,62 +275,64 @@ public class HandDetector : MonoBehaviour
     if (rightGrabedObj != null && !rightHandclose)
     {
       droppingObj = rightGrabedObj;
-      rightGrabedObj.grabing = false;
+      rightGrabedObj.Grabing = false;
       rightGrabedObj.followTarget = null;
       rightGrabedObj = null;
+      rightHandOccupied = false;
       //grabableObj.enabled = false;
     }
     if (leftGrabedObj != null && !leftHandClose)
     {
       droppingObj = leftGrabedObj;
-      leftGrabedObj.grabing = false;
+      leftGrabedObj.Grabing = false;
       leftGrabedObj.followTarget = null;
       leftGrabedObj = null;
+      leftHandOccupied = false;
     }
     if (droppingObj != null && leftGrabedObj == null && rightGrabedObj == null)
     {
-      if (UnityEngine.Screen.height <= mainCam.WorldToScreenPoint(droppingObj.transform.position).y)
-      {
-        Debug.Log("hit floor" + " " + ySpeed + UnityEngine.Screen.height + " " + floor.y + mainCam.WorldToScreenPoint(droppingObj.transform.position));
-        if (ySpeed > 0f)
-        {
-          ySpeed = 0;
-        }
+      //if (UnityEngine.Screen.height <= mainCam.WorldToScreenPoint(droppingObj.transform.position).y)
+      //{
+      //  Debug.Log("hit floor" + " " + ySpeed + UnityEngine.Screen.height + " " + floor.y + mainCam.WorldToScreenPoint(droppingObj.transform.position));
+      //  if (ySpeed > 0f)
+      //  {
+      //    ySpeed = 0;
+      //  }
 
-        ySpeed -= gravity * Time.deltaTime;
-        droppingObj.transform.Translate(new Vector3(0, ySpeed, 0));
-      }
-      else if (ground.y <= mainCam.WorldToScreenPoint(droppingObj.transform.position).y)
-      {
+      //  ySpeed -= gravity * Time.deltaTime;
+      //  droppingObj.transform.Translate(new Vector3(0, ySpeed, 0));
+      //}
+      //else if (ground.y <= mainCam.WorldToScreenPoint(droppingObj.transform.position).y)
+      //{
 
-        Vector3 resultVector = (boxDirectionVector[1] - boxDirectionVector[0]);
-        //resultVector = Vector3.Normalize(resultVector);
-        double a = Math.Sqrt((double)((boxDirectionVector[1].x - boxDirectionVector[0].x) * (boxDirectionVector[1].x - boxDirectionVector[0].x) +
-         (boxDirectionVector[1].y - boxDirectionVector[0].y) * (boxDirectionVector[1].y - boxDirectionVector[0].y)));
+      //  Vector3 resultVector = (boxDirectionVector[1] - boxDirectionVector[0]);
+      //  //resultVector = Vector3.Normalize(resultVector);
+      //  double a = Math.Sqrt((double)((boxDirectionVector[1].x - boxDirectionVector[0].x) * (boxDirectionVector[1].x - boxDirectionVector[0].x) +
+      //   (boxDirectionVector[1].y - boxDirectionVector[0].y) * (boxDirectionVector[1].y - boxDirectionVector[0].y)));
 
-        float ySpeedMagnitude = ((float)a);
-        float ySpeed = resultVector.y;
-        ySpeed -= gravity * Time.deltaTime;
+      //  float ySpeedMagnitude = ((float)a);
+      //  float ySpeed = resultVector.y;
+      //  ySpeed -= gravity * Time.deltaTime;
 
-        //droppingObj.transform.Trans
-        Debug.Log("dropping Above Ground" + ySpeedMagnitude + " " + floor + " " + ground + " " + droppingObj.transform.position.y + " " + UnityEngine.Screen.height + " " + ySpeed + " " + resultVector + " " + Time.deltaTime);
-        droppingObj.transform.Translate(new Vector3(0, ySpeed, 0));
-      }
-      else
-      {
-        Debug.Log("dropping Below Ground" + " " + droppingObj.transform.localPosition + droppingObj.transform.position + mainCam.WorldToScreenPoint(droppingObj.transform.position));
-      }
+      //  //droppingObj.transform.Trans
+      //  Debug.Log("dropping Above Ground" + ySpeedMagnitude + " " + floor + " " + ground + " " + droppingObj.transform.position.y + " " + UnityEngine.Screen.height + " " + ySpeed + " " + resultVector + " " + Time.deltaTime);
+      //  droppingObj.transform.Translate(new Vector3(0, ySpeed, 0));
+      //}
+      //else
+      //{
+      //  Debug.Log("dropping Below Ground" + " " + droppingObj.transform.localPosition + droppingObj.transform.position + mainCam.WorldToScreenPoint(droppingObj.transform.position));
+      //}
 
     }
   }
 
   public void CheckGrabing()
   {
-    if (rightHandclose)
+    if (rightHandclose && !rightHandOccupied)
     {
       //var rightScreenPoint = mainCam.WorldToScreenPoint(RHC.transform.position);
       var rightScreenPoint = mainCam.WorldToScreenPoint(RPT.position);
-      //Debug.Log(rightScreenPoint);
+      Debug.Log("rightScreenPoint" + rightScreenPoint);
       Ray ray = mainCam.ScreenPointToRay(rightScreenPoint);
       RaycastHit hit;
       if (Physics.Raycast(ray, out hit, 100))
@@ -342,8 +344,9 @@ public class HandDetector : MonoBehaviour
           //{
           grableObj.followTarget = RPT;
           //grableObj.followTarget = RHC.transform;
-          grableObj.grabing = true;
+          grableObj.Grabing = true;
           rightGrabedObj = grableObj;
+          rightHandOccupied = true;
           //}
 
         }
@@ -352,7 +355,7 @@ public class HandDetector : MonoBehaviour
     }
 
 
-    if (leftHandClose)
+    if (leftHandClose && !leftHandOccupied)
     {
       var leftScreenPoint = mainCam.WorldToScreenPoint(LPT.position);
       //var leftScreenPoint = mainCam.WorldToScreenPoint(LHC.transform.position);
@@ -368,8 +371,9 @@ public class HandDetector : MonoBehaviour
           //{
           //grableObj.followTarget = LHC.transform;
           grableObj.followTarget = LPT;
-          grableObj.grabing = true;
+          grableObj.Grabing = true;
           leftGrabedObj = grableObj;
+          leftHandOccupied = true;
           //}
 
         }
