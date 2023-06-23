@@ -4,11 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Assets;
 
-public struct Point
-{
-  public Vector3 center { get; set; }
-  public GameObject gameObject { get; set; }
-}
 
 
 

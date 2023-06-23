@@ -13,6 +13,12 @@ using UnityEngine;
 
 namespace Assets
 {
+  public struct Point
+  {
+    public Vector3 center { get; set; }
+    public GameObject gameObject { get; set; }
+  }
+
   public class Helper : MonoBehaviour
   {
 
@@ -44,6 +50,25 @@ namespace Assets
       //  }
 
       //}
+    }
+
+    public void AssignChildToExisingGameObj(GameObject childObject, GameObject parentObject, float zDistance)
+    {
+      Vector3 m_DistanceFromCamera;
+      m_DistanceFromCamera = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z + zDistance);
+      Plane m_Plane = new Plane(Vector3.forward, m_DistanceFromCamera);
+
+      Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(parentObject.transform.position));
+      float enter = 0;
+      if (m_Plane.Raycast(ray, out enter))
+      {
+        Vector3 hitPoint = ray.GetPoint(enter);
+        childObject.transform.position = hitPoint;
+      }
+
+      //polygonCopy.transform.position = panelPoint[j].transform.position;
+      childObject.transform.parent = parentObject.transform;
+
     }
 
     public MathFunc mathFunc = new MathFunc();

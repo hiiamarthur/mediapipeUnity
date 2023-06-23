@@ -7,10 +7,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class GeneratePolygon : MonoBehaviour
+public class AnswerPolygon : MonoBehaviour
 {
-  public GameObject polygonPanel;
-  public GameObject[] polygon;
 
   // Use this for initialization
   void Start()
@@ -24,4 +22,3 @@ public class GeneratePolygon : MonoBehaviour
 
   }
 }
-
