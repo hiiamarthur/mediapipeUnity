@@ -66,18 +66,7 @@ public class ManagePolygon : MonoBehaviour
         {
           Debug.Log("[PolygonMemorize]" + hit.transform.position);
         }
-        //   if (m_Plane.Raycast(ray, out enter))
-        //   {
-        //     Vector3 hitPoint = ray.GetPoint(enter);
-        //     Vector3 a = new Vector3(0, rectTransform.sizeDelta.y, 0) + Camera.main.WorldToScreenPoint(polygonPanel.transform.position);
-        //     Debug.Log("[PolygonMemorize]" + Camera.main.ScreenToWorldPoint(a) + polygonPanel.transform.position + Input.mousePosition + panelPoint[j].transform.position + polygonCopy.transform.position
-        //+ Camera.main.ScreenToWorldPoint(panelPoint[j].transform.position)
-        //+ Camera.main.WorldToViewportPoint(polygonCopy.transform.position) + Vector3.Project(panelPoint[j].transform.position, new Vector3(1.0f, 1.0f, 0)) + polygonCopy.transform.position);
-        //     polygonCopy.transform.position = hitPoint;
-        //   }
 
-        //   //polygonCopy.transform.position = panelPoint[j].transform.position;
-        //   polygonCopy.transform.parent = panelPoint[j].transform;
         helper.AssignChildToExisingGameObj(polygonCopy, panelPoint[j], 30.0f);
         answers.Add(x);
       }
@@ -92,6 +81,7 @@ public class ManagePolygon : MonoBehaviour
   public List<GameObject> hideQuestionAndShowPanel()
   {
     polygonPanel.SetActive(true);
+    EnablePolygonGrabable(true);
     Destroy(questionObj);
     GameObject _answerObj = new GameObject("answer");
     _answerObj.transform.parent = transform;
@@ -128,10 +118,11 @@ public class ManagePolygon : MonoBehaviour
 
   }
 
-  public void ClearAnsewr()
+  public void ClearAnswers(int index = -1)
   {
     for (int i = 0; i < answerObjList.Count; i++)
     {
+      if (index >= 0 && i != index) continue;
       //Destroy(answerObjList[i]);
       if (answerObjList[i].TryGetComponent<PanelPoint>(out PanelPoint panelPoint))
       {
@@ -146,6 +137,24 @@ public class ManagePolygon : MonoBehaviour
       }
     }
   }
+
+  //public void ClearOneAnswer(int index)
+  //{
+  //  if (answerObjList.ElementAtOrDefault(index) != null)
+  //  {
+  //    if (answerObjList[index].TryGetComponent<PanelPoint>(out PanelPoint panelPoint))
+  //    {
+  //      panelPoint.occupied = false;
+  //      //Destroy(panelPoint.occupiedObject);
+  //      panelPoint.occupiedObject = null;
+  //      var children = helper.GetChildren(answerObjList[i]);
+  //      for (int j = 0; j < children.Count; j++)
+  //      {
+  //        Destroy(children[j]);
+  //      }
+  //    }
+  //  }
+  //}
 
   public bool matchAnswer()
   {
@@ -181,7 +190,6 @@ public class ManagePolygon : MonoBehaviour
     }
     else
     {
-
       return false;
     }
 
@@ -191,15 +199,27 @@ public class ManagePolygon : MonoBehaviour
 
   public void NextQuestion()
   {
+    EnablePolygonGrabable(false);
     Destroy(answerObj);
     answers.Clear();
     answerObjList.Clear();
     showResultTime = 2.0f;
   }
+
+  public void EnablePolygonGrabable(bool enabled)
+  {
+    polygons.ForEach(polygon =>
+    {
+      if (polygon.TryGetComponent<Grabable>(out Grabable grabable))
+      {
+        grabable.enableGrabing = enabled;
+      }
+    });
+  }
   // Use this for initialization
   void Start()
   {
-
+    EnablePolygonGrabable(false);
   }
   // Update is called once per frame
   void Update()

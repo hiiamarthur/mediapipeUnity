@@ -21,6 +21,7 @@ public class Grabable : MonoBehaviour
   public Vector3 originPosition;
   public Transform followTarget;
   public string grabObjName;
+  public int grabableID;
   // Start is called before the first frame update
   void Start()
   {

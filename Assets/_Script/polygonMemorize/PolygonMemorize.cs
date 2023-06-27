@@ -69,12 +69,14 @@ public class PolygonMemorize : MonoBehaviour
     //Debug.Log("gameStart" + inputDifficulty);
   }
 
-  public void gameClearAnswer() {
+  public void gameClearAnswer()
+  {
     isClearAnswer = true;
   }
 
   void Update()
   {
+    RaycastHit hit;
     if (isStart)
     {
 
@@ -119,7 +121,7 @@ public class PolygonMemorize : MonoBehaviour
             if (child.name.Contains("point"))
             {
               Vector3 a = Camera.main.WorldToScreenPoint(child.transform.position);
-              Debug.Log("points" + child.name + " " + Camera.main.WorldToScreenPoint(gameObject.transform.position) + a);
+              //Debug.Log("points" + child.name + " " + Camera.main.WorldToScreenPoint(gameObject.transform.position) + a);
               Point point = new Point
               {
                 center = a,
@@ -137,52 +139,28 @@ public class PolygonMemorize : MonoBehaviour
         if (isClearAnswer)
         {
           isClearAnswer = false;
-          list.Clear();
-          managePolygon.ClearAnsewr();
+          //list = new Dictionary<int,Point>();
+          managePolygon.ClearAnswers();
         }
 
       }
 
       if (answerQuestion)
       {
-        RaycastHit hit;
         foreach (KeyValuePair<int, Point> item in list)
         {
           var a = item.Value.gameObject.GetComponent<PanelPoint>();
-          //if (a.occupied)
-          //{
-          //  positionNameDict.Add(item.Key, a.occupiedObject.name);
-          //}
-          //var screenPoint = mainCam.WorldToScreenPoint(item);
+
           Ray ray = Camera.main.ScreenPointToRay(item.Value.center);
-          Debug.Log("[polygonMemorize] ray" + item);
+          //Debug.Log("[polygonMemorize] ray" + item);
           if (Physics.Raycast(ray, out hit, 100))
           {
-            Debug.Log("[polygonMemorize] ray" + " " + item);
             if (hit.transform.TryGetComponent<Grabable>(out Grabable grabable))
             {
-              Debug.Log("[polygonMemorize] raycast " + grabable.gameObject.name + " " + item.Key + " " + grabable.Grabing);
-
+              //Debug.Log("[polygonMemorize] raycast " + grabable.gameObject.name + " " + item.Key + " " + grabable.Grabing);
+              grabable.grabableID = item.Key;
               if (!grabable.Grabing && grabable.enableGrabing)
               {
-
-                //Debug.Log("ticktactoe raycast2 " + " " + hit.transform.position + " " + item.Key + " " + grabable.gameObject.transform.position + " " +
-                //grabable.gameObject.transform.localPosition + " " + grabable.gameObject.transform.TransformVector(item.Value.center) + " "
-                //+ item.Value.center + " " + mainCam.ScreenToWorldPoint(item.Value.center) + " " + item.Value.gameObject.transform.position
-                //+ Vector3.ProjectOnPlane(item.Value.center, Vector3.zero));
-                //grabable.gameObject.transform.position = item.Value.center;
-                //Debug.Log("[TickTacToe] grab" + item.Value.center + grabable.gameObject.transform.position);
-                //if (grabable.grabObjName == _toeGrabable.grabObjName)
-                //{
-                //  _toeGrabable.enableGrabing = false;
-                //  _tickGrabable.enableGrabing = true;
-
-                //}
-                //else if (grabable.grabObjName == _tickGrabable.grabObjName)
-                //{
-                //  _tickGrabable.enableGrabing = false;
-                //  _toeGrabable.enableGrabing = true;
-                //}
                 a.occupiedObject = grabable.gameObject;
               }
 
@@ -190,16 +168,35 @@ public class PolygonMemorize : MonoBehaviour
           }
         }
 
-        if (managePolygon.matchAnswer()) {
+        if (managePolygon.matchAnswer())
+        {
           managePolygon.NextQuestion();
+          list.Clear();
           createdQuestion = false;
           answerQuestion = false;
           questionTimeRemain = 5.0f;
         }
+
+        if (Input.GetMouseButton(0))
+        {
+          Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+          if (Physics.Raycast(ray, out hit))
+          {
+            if (hit.transform.TryGetComponent<Grabable>(out Grabable grabable))
+            {
+              managePolygon.ClearAnswers(grabable.grabableID);
+              if (!grabable.enableGrabing)
+                Destroy(grabable.gameObject);
+            }
+          }
+        }
       }
+
+     
+
+
     }
-
-
   }
 
 }
