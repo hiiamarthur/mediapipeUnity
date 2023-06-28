@@ -138,24 +138,6 @@ public class ManagePolygon : MonoBehaviour
     }
   }
 
-  //public void ClearOneAnswer(int index)
-  //{
-  //  if (answerObjList.ElementAtOrDefault(index) != null)
-  //  {
-  //    if (answerObjList[index].TryGetComponent<PanelPoint>(out PanelPoint panelPoint))
-  //    {
-  //      panelPoint.occupied = false;
-  //      //Destroy(panelPoint.occupiedObject);
-  //      panelPoint.occupiedObject = null;
-  //      var children = helper.GetChildren(answerObjList[i]);
-  //      for (int j = 0; j < children.Count; j++)
-  //      {
-  //        Destroy(children[j]);
-  //      }
-  //    }
-  //  }
-  //}
-
   public bool matchAnswer()
   {
 

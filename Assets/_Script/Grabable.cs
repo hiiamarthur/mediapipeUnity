@@ -22,6 +22,7 @@ public class Grabable : MonoBehaviour
   public Transform followTarget;
   public string grabObjName;
   public int grabableID;
+
   // Start is called before the first frame update
   void Start()
   {
@@ -33,6 +34,7 @@ public class Grabable : MonoBehaviour
   {
     if (grabing)
     {
+      this.transform.rotation = Quaternion.identity;
       // transform.position = new Vector3(followTarget.position.x, followTarget.position.y, this.transform.position.z);
       // transform.position = followTarget.position;
       var followScreenPos = Camera.main.WorldToScreenPoint(followTarget.transform.position);
