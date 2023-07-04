@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets;
 using System.Linq;
+using static UnityEngine.Networking.UnityWebRequest;
+using TMPro;
 
 public class ManagePolygon : MonoBehaviour
 {
@@ -140,43 +142,82 @@ public class ManagePolygon : MonoBehaviour
 
   public bool matchAnswer()
   {
+    int occupiedAnswerObjListCount = 0;
+    List<bool> list = new List<bool>();
+    answerObjList.ForEach((answerObj) =>
+    {
+      Debug.Log("[polygonmemorize] match answer loop b" + occupiedAnswerObjListCount);
+      if (answerObj.transform.TryGetComponent<PanelPoint>(out PanelPoint panelPoint))
+      {
+        Debug.Log("[polygonmemorize] match answer loop a" + occupiedAnswerObjListCount + panelPoint.occupied);
+        if (!panelPoint.occupied)
+        {
+          list.Add(false);
+          return;
+        }
+        else
+        {
+          Debug.Log("[polygonmemorize] match answer loop add");
+          occupiedAnswerObjListCount += 1;
+        }
+        var b = polygons.FindIndex(polygon =>
+      {
+        return panelPoint.occupiedObject.name.Contains(polygon.name);
+      });
+        list.Add(panelPoint.occupied && b == answers[answerObjList.IndexOf(answerObj)]);
+      }
+      else
+      {
+        Debug.Log("[polygonmemorize] match answer loop c" + occupiedAnswerObjListCount);
+        list.Add(false);
+      }
+    });
 
-    bool result = answerObjList.All((answerObj) =>
-     {
-       if (answerObj.transform.TryGetComponent<PanelPoint>(out PanelPoint panelPoint))
-       {
-         if (!panelPoint.occupied) return false;
-         var b = polygons.FindIndex(polygon =>
-       {
-         return panelPoint.occupiedObject.name.Contains(polygon.name);
-       });
-         //Debug.Log("[polygonmemorize] match answer" + answers[answerObjList.IndexOf(answerObj)] + panelPoint.occupied + b);
-         return panelPoint.occupied && b == answers[answerObjList.IndexOf(answerObj)];
-       }
-       else
-       {
-         return false;
-       }
-     });
+    bool result = list.All(x => { return x; });
 
-
-
+    Debug.Log("[polygonmemorize] match answer" + list.Count() + occupiedAnswerObjListCount + answers.Count + result);
     if (result)
     {
-      if (!resultPanel.active)
-        resultPanel.SetActive(true);
-      showResultTime -= Time.deltaTime;
-      if (showResultTime < 0 && resultPanel.active)
-        resultPanel.SetActive(false);
-      return showResultTime < 0 && result;
+      TextMeshProUGUI gui = resultPanel.GetComponentInChildren<TextMeshProUGUI>();
+      gui.text = "Correct!";
+      return showResult(true);
+      //if (!resultPanel.active)
+      //  resultPanel.SetActive(true);
+      //showResultTime -= Time.deltaTime;
+      //if (showResultTime < 0 && resultPanel.active)
+      //  resultPanel.SetActive(false);
+      //return showResultTime < 0 && result;
     }
     else
     {
+
+      if (occupiedAnswerObjListCount == answers.Count)
+      {
+        TextMeshProUGUI gui = resultPanel.GetComponentInChildren<TextMeshProUGUI>();
+        gui.text = "Incorrect!";
+        //if (resultPanel.<TextMeshProUGUI>(out TextMeshProUGUI gui))
+        //{
+        //  //gui.SetText("Incorrect!");
+        //  gui.text = "Incorrects!";
+        Debug.Log("[polygonmemorize] match answer result" + gui.text);
+        //}
+        showResultTime = 2.0f;
+        return showResult(false);
+      }
       return false;
     }
 
-    //Debug.Log("[polygonmemorize] match answer result" + answerObjList.Count + answers.Count + a);
     //return a;
+  }
+
+  public bool showResult(bool result)
+  {
+    if (!resultPanel.active)
+      resultPanel.SetActive(true);
+    showResultTime -= Time.deltaTime;
+    if (showResultTime < 0 && resultPanel.active)
+      resultPanel.SetActive(false);
+    return showResultTime < 0 && result;
   }
 
   public void NextQuestion()

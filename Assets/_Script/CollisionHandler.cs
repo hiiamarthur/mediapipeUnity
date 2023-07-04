@@ -6,12 +6,13 @@
 
 using System.Collections;
 using UnityEngine;
+using System;
 
 namespace Assets._Script
 {
   public class CollisionHandler : MonoBehaviour
   {
-
+    public event EventHandler<EventArgs> collisionFunction;
 
     private Rigidbody _rb;
     private Vector3 _velocity;
@@ -28,6 +29,10 @@ namespace Assets._Script
     private void OnCollisionEnter(Collision collision)
     {
       Debug.Log("OnCollisionEnter"+ collision);
+      if (collisionFunction != null) {
+        collisionFunction(this,new EventArgs());
+      }
+      //collisionFunction();
       //ReflectProjectile(_rb, collision.contacts[0].normal);
     }
 
