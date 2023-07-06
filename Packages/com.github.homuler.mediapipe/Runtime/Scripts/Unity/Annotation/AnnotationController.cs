@@ -67,8 +67,6 @@ namespace Mediapipe.Unity
 
     protected virtual void LateUpdate()
     {
-      //change code
-      Debug.Log("annotation draw");
       if (isStale)
       {
         SyncNow();

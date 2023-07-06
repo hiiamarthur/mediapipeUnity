@@ -38,7 +38,7 @@ public class Grabable : MonoBehaviour
       // transform.position = new Vector3(followTarget.position.x, followTarget.position.y, this.transform.position.z);
       // transform.position = followTarget.position;
       var followScreenPos = Camera.main.WorldToScreenPoint(followTarget.transform.position);
-      Debug.Log(("followScreenPos " + followScreenPos));
+      //Debug.Log(("followScreenPos " + followScreenPos));
 
       var worldPos =
         Camera.main.ScreenToWorldPoint(new Vector3(followScreenPos.x, followScreenPos.y, 10f));

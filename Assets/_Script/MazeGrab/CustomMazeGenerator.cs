@@ -62,7 +62,7 @@ public class CustomMazeGenerator : MonoBehaviour
       GenerateMaze();
 
       string localPath = "Assets/Mazes/" + name + ".prefab";
-      PrefabUtility.SaveAsPrefabAssetAndConnect(parent, localPath, InteractionMode.UserAction);
+      //PrefabUtility.SaveAsPrefabAssetAndConnect(parent, localPath, InteractionMode.UserAction);
 
       DestroyImmediate(parent);
     }
