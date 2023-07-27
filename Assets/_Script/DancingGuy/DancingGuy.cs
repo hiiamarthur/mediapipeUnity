@@ -134,10 +134,10 @@ public class DancingGuy : MonoBehaviour
 
   public void handlePoseDetected(object sender, string result)
   {
-    //Debug.Log("handlePoseDetected final" + result);
+    
     if (poseButtonMap.Contains(result))
     {
-
+      Debug.Log("handlePoseDetected final" + result);
       if (!updated)
       {
         handleAnswerQuestion(poseButtonMap.IndexOf(result));
